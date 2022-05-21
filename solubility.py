@@ -12,10 +12,11 @@ class Ion:
         return "cation" if self.charge > 0 else "anion"
 
     def __str__(self) -> str:
-        return self.symbol
-
-    def __repr__(self) -> str:
-        return self.symbol
+        return (
+            click.style(self.symbol, fg="green")
+            if self.charge > 0
+            else click.style(self.symbol, fg="red")
+        )
 
 
 # cations
@@ -87,13 +88,13 @@ def solubility_enquiry():
     while cation not in cation_names:
         cation = input("Enter cation: ")
         if cation not in cation_names:
-            click.echo("Invalid cation")
+            click.echo(click.style("Invalid cation", fg="orange"))
 
     anion = ""
     while anion not in anion_names:
         anion = input("Enter anion: ")
         if anion not in anion_names:
-            click.echo("Invalid anion")
+            click.echo(click.style("Invalid anion", fg="orange"))
 
     cation: Ion = [c for c in cations if c.name == cation][0]
     anion: Ion = [a for a in anions if a.name == anion][0]
@@ -124,10 +125,10 @@ def solubility_quiz():
         if (check_solubility(cation, anion) and answer == "yes") or (
             not check_solubility(cation, anion) and answer == "no"
         ):
-            click.echo("Correct!")
+            click.echo(click.style("Correct!", fg="green"))
             score += 1
         else:
-            click.echo("Incorrect!")
+            click.echo(click.style("Incorrect!", fg="red"))
 
         question_count += 1
         if question_count == 10:
